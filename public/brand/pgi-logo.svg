@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 92 92" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
+    <rect id="Prancheta1" x="0" y="0" width="91.995" height="92" style="fill:none;"/>
+    <g id="Prancheta11" serif:id="Prancheta1">
+        <path d="M91.995,6.817L91.995,85.183C91.995,88.946 88.941,92 85.178,92L6.817,92C3.054,92 0,88.946 0,85.183L0,6.817C0,3.054 3.054,0 6.817,0L85.178,0C88.941,0 91.995,3.054 91.995,6.817Z" style="fill:white;"/>
+        <g id="g6132" transform="matrix(0.623571,0,0,-0.623571,-326.657,486.423)">
+            <g id="text11835" transform="matrix(0.509318,0,0,-0.509318,467.778,735.456)">
+                <g transform="matrix(1,0,0,1,121.08,131.206)">
+                    <text x="0px" y="0px" style="font-family:'ConthraxSb-Regular', 'Conthrax', sans-serif;font-weight:600;font-size:40px;fill:rgb(29,62,84);">GLASS</text>
+                </g>
+                <g transform="matrix(1,0,0,1,121.08,181.206)">
+                    <text x="0px" y="0px" style="font-family:'ConthraxSb-Regular', 'Conthrax', sans-serif;font-weight:600;font-size:40px;fill:rgb(29,62,84);">INDUSTR<tspan x="229.96px " y="0px ">Y</tspan></text>
+                </g>
+            </g>
+            <g transform="matrix(1.69215,0,0,-1.69215,526.16,722.039)">
+                <g id="text11839">
+                    <text x="0px" y="0px" style="font-family:'ConthraxSb-Regular', 'Conthrax', sans-serif;font-weight:600;font-size:40px;fill:rgb(29,62,84);stroke:rgb(29,62,84);stroke-width:1.49px;">PGI</text>
+                </g>
+            </g>
+            <g id="g13072-9" transform="matrix(0,-2.07375,-2.97951,0,774.821,1483.36)">
+                <path id="path13070-2" d="M378.851,53.206C379.438,53.206 379.731,53.499 379.731,54.086L379.731,80.326C379.731,80.913 379.438,81.206 378.851,81.206L374.531,81.206C373.918,81.206 373.611,80.913 373.611,80.326L373.611,54.086C373.611,53.499 373.918,53.206 374.531,53.206L378.851,53.206Z" style="fill:rgb(151,26,31);fill-rule:nonzero;stroke:rgb(151,26,31);stroke-width:1.49px;"/>
+            </g>
+        </g>
+    </g>
+</svg>
