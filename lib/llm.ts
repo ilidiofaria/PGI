@@ -12,7 +12,6 @@ Regras obrigatórias:
 - Mantém as dimensões em milímetros e a quantidade como número inteiro.
 - Usa Notes para a referência do vão ou janela quando existir.
 - Não inventes dimensões ou quantidades. Quando um campo técnico necessário não estiver legível, deixa-o vazio e inclui o nome em provisionalFields.
-- Não convertas descrições de vidro em códigos internos do Optima sem uma correspondência explícita no documento. Inclui sempre SEP_1 e MAT_2 em provisionalFields quando resultarem de interpretação ou mapeamento.
 - PRODUCTO pode assumir VD quando o documento representar vidro duplo; caso contrário, deixa vazio.
 - Confidence deve refletir a confiança na leitura da linha, entre 0 e 1.
 - O resultado será obrigatoriamente validado por uma pessoa antes de ser importado no Optima.
