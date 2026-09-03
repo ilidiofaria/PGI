@@ -45,7 +45,9 @@ export async function POST(request: Request) {
         sourceKind,
         rows,
         previewUrl: sourceKind === "dwg" ? "/demo/3.01-vaos-exteriores.pdf" : undefined,
-        warnings: ["Resultado inicial sujeito a validação humana antes da importação no Optima."],
+        warnings: sourceKind === "pdf"
+          ? ["O separador foi proposto a partir da descrição do PDF. O segundo material requer preenchimento e validação humana."]
+          : ["Resultado inicial sujeito a validação humana antes da importação no Optima."],
       });
     }
 
@@ -68,9 +70,9 @@ export async function POST(request: Request) {
 
     const defaults: Record<string, CellValue> = sourceKind === "dwg"
       ? { PRODUCTO: "VD", MAT_1: "6CLXTM70-33II", SEP_1: "CX16", MAT_2: "44.1STDIC", Wor1_1: "ARTD", Wor1_2: "TEMPERA", Wor3_1: "ARI", Wor0_4: "SRVINST", CUSTOMER: "01107" }
-      : { PRODUCTO: "VD", MAT_1: "8MC.CG1.0T", SEP_1: "CX16", MAT_2: "44.2STD", Wor1_1: "ARTD", Wor1_2: "TEMPERA", Wor3_1: "ARI", Wor0_4: "SRVINST", CUSTOMER: "01048" };
+      : { PRODUCTO: "VD", MAT_1: "8MC.CG1.0T", Wor1_1: "ARTD", Wor1_2: "TEMPERA", Wor3_1: "ARI", Wor0_4: "SRVINST", CUSTOMER: "01048" };
 
-    const rows = await processWithLlm({
+    const processedRows = await processWithLlm({
       provider,
       apiKey,
       model,
@@ -78,13 +80,21 @@ export async function POST(request: Request) {
       pdf: pdfBuffer,
       defaults,
     });
+    const rows = sourceKind === "pdf"
+      ? processedRows.map((row) => ({
+          ...row,
+          provisionalFields: Array.from(new Set([...row.provisionalFields, "SEP_1", "MAT_2"])),
+        }))
+      : processedRows;
 
     return Response.json({
       mode: provider === "openai" ? `OpenAI · ${model}` : `Anthropic · ${model}`,
       sourceKind,
       rows,
       previewUrl: sourceKind === "dwg" ? "/demo/3.01-vaos-exteriores.pdf" : undefined,
-      warnings: ["Os campos técnicos preenchidos pelo modelo devem ser confirmados por uma pessoa."],
+      warnings: sourceKind === "pdf"
+        ? ["SEP_1 e MAT_2 são propostas do modelo e permanecem por confirmar antes da exportação."]
+        : ["Os campos técnicos preenchidos pelo modelo devem ser confirmados por uma pessoa."],
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Ocorreu um erro no processamento.";

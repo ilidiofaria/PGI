@@ -24,6 +24,10 @@ export function isCompleteRow(row: OptimaRow) {
   return REQUIRED_FIELDS.every((field) => String(row.cells[field] ?? "").trim() !== "");
 }
 
+export function isReviewableRow(row: OptimaRow) {
+  return isCompleteRow(row) && row.provisionalFields.length === 0;
+}
+
 export function blankRow(index: number): OptimaRow {
   return {
     rowId: crypto.randomUUID(),

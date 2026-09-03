@@ -7,7 +7,7 @@ import {
   FileUp, KeyRound, LoaderCircle, LogOut, Plus, Search, ShieldCheck, Sparkles,
   Trash2, UploadCloud, X,
 } from "lucide-react";
-import { blankRow, isCompleteRow, type OptimaRow, type ProcessResponse, type Provider, type SourceKind } from "@/lib/types";
+import { blankRow, isCompleteRow, isReviewableRow, type OptimaRow, type ProcessResponse, type Provider, type SourceKind } from "@/lib/types";
 
 const MODELS: Record<Provider, string> = {
   demo: "",
@@ -61,7 +61,8 @@ export function PrototypeApp() {
   }, 0), [rows]);
   const approved = rows.filter((row) => row.approved).length;
   const incomplete = rows.filter((row) => !isCompleteRow(row)).length;
-  const readyToExport = rows.length > 0 && approved === rows.length && incomplete === 0;
+  const pendingReview = rows.filter((row) => row.provisionalFields.length > 0).length;
+  const readyToExport = rows.length > 0 && approved === rows.length && incomplete === 0 && pendingReview === 0;
   const previewUrl = remotePreview || localPreview;
 
   function selectFile(nextFile?: File) {
@@ -119,18 +120,28 @@ export function PrototypeApp() {
 
   function updateCell(rowId: string, field: string, value: string) {
     setRows((current) => current.map((row) => row.rowId === rowId
-      ? { ...row, approved: false, cells: { ...row.cells, [field]: value } }
+      ? {
+          ...row,
+          approved: false,
+          cells: { ...row.cells, [field]: value },
+        }
+      : row));
+  }
+
+  function confirmField(rowId: string, field: string) {
+    setRows((current) => current.map((row) => row.rowId === rowId && String(row.cells[field] ?? "").trim() !== ""
+      ? { ...row, provisionalFields: row.provisionalFields.filter((item) => item !== field) }
       : row));
   }
 
   function toggleApproval(rowId: string) {
-    setRows((current) => current.map((row) => row.rowId === rowId && isCompleteRow(row)
+    setRows((current) => current.map((row) => row.rowId === rowId && isReviewableRow(row)
       ? { ...row, approved: !row.approved }
       : row));
   }
 
   function approveAll() {
-    setRows((current) => current.map((row) => ({ ...row, approved: isCompleteRow(row) })));
+    setRows((current) => current.map((row) => ({ ...row, approved: isReviewableRow(row) })));
   }
 
   function addBlankRow() {
@@ -145,6 +156,7 @@ export function PrototypeApp() {
     setRows((current) => current.map((row) => ({
       ...row,
       approved: false,
+      provisionalFields: row.provisionalFields.filter((field) => field !== "CUSTOMER" && field !== "ORDER"),
       cells: { ...row.cells, CUSTOMER: customer, ORDER: order },
     })));
   }
@@ -239,7 +251,7 @@ export function PrototypeApp() {
               ))}
             </div>
             {provider === "demo" ? (
-              <div className="info-line"><ShieldCheck size={18} /><div><strong>Dados de referência validados</strong><span>Utiliza o output esperado dos ficheiros fornecidos, sem consumo de API.</span></div></div>
+              <div className="info-line"><ShieldCheck size={18} /><div><strong>Dados de referência para demonstração</strong><span>Os campos técnicos inferidos permanecem sujeitos a confirmação humana.</span></div></div>
             ) : (
               <div className="credentials-row">
                 <label>Modelo<input value={model} onChange={(event) => setModel(event.target.value)} /></label>
@@ -260,6 +272,7 @@ export function PrototypeApp() {
             <div><span>Linhas</span><strong>{rows.length}</strong></div>
             <div><span>Unidades</span><strong>{units}</strong></div>
             <div><span>Área estimada</span><strong>{area.toLocaleString("pt-PT", { maximumFractionDigits: 2 })} m²</strong></div>
+            <div><span>Por confirmar</span><strong>{pendingReview}</strong></div>
             <div><span>Validadas</span><strong className={approved === rows.length ? "text-success" : ""}>{approved}/{rows.length}</strong></div>
           </section>
 
@@ -293,16 +306,25 @@ export function PrototypeApp() {
                   <tbody>
                     {filteredRows.map((row) => {
                       const complete = isCompleteRow(row);
-                      return <tr key={row.rowId} className={`${row.approved ? "row-approved" : ""} ${!complete ? "row-incomplete" : ""}`}>
-                        <td className="status-cell"><button className={`approval ${row.approved ? "approval-on" : ""}`} onClick={() => toggleApproval(row.rowId)} disabled={!complete} title={complete ? "Validar linha" : "Preencher campos obrigatórios"} aria-label="Validar linha">{row.approved && <Check size={13} />}</button></td>
-                        {EDITABLE_COLUMNS.map(([field, label, className]) => <td className={className} key={field}><input aria-label={label} value={String(row.cells[field] ?? "")} onChange={(event) => updateCell(row.rowId, field, event.target.value)} /></td>)}
+                      const reviewable = isReviewableRow(row);
+                      const approvalTitle = !complete
+                        ? "Preencher campos obrigatórios"
+                        : row.provisionalFields.length > 0
+                          ? `Confirmar campos provisórios: ${row.provisionalFields.join(", ")}`
+                          : "Validar linha";
+                      return <tr key={row.rowId} className={`${row.approved ? "row-approved" : ""} ${!complete ? "row-incomplete" : ""} ${row.provisionalFields.length > 0 ? "row-provisional" : ""}`}>
+                        <td className="status-cell"><button className={`approval ${row.approved ? "approval-on" : ""}`} onClick={() => toggleApproval(row.rowId)} disabled={!reviewable} title={approvalTitle} aria-label={approvalTitle}>{row.approved && <Check size={13} />}</button></td>
+                        {EDITABLE_COLUMNS.map(([field, label, className]) => {
+                          const provisional = row.provisionalFields.includes(field);
+                          return <td className={`${className} ${provisional ? "cell-provisional" : ""}`} key={field}><input aria-label={label} title={provisional ? "Valor provisório: confirmar ou corrigir" : undefined} placeholder={provisional ? "Por confirmar" : undefined} value={String(row.cells[field] ?? "")} onChange={(event) => updateCell(row.rowId, field, event.target.value)} onBlur={() => confirmField(row.rowId, field)} /></td>;
+                        })}
                         <td className="action-cell"><button className="icon-button subtle danger" onClick={() => removeRow(row.rowId)} title="Eliminar linha" aria-label="Eliminar linha"><Trash2 size={16} /></button></td>
                       </tr>;
                     })}
                   </tbody>
                 </table>
               </div>
-              <div className="table-footer"><span>{filteredRows.length} de {rows.length} linhas visíveis.</span><span>{incomplete > 0 ? `${incomplete} linhas incompletas.` : "Campos obrigatórios completos."}</span></div>
+              <div className="table-footer"><span>{filteredRows.length} de {rows.length} linhas visíveis.</span><span>{incomplete > 0 ? `${incomplete} linhas incompletas.` : pendingReview > 0 ? `${pendingReview} linhas com campos por confirmar.` : "Campos obrigatórios completos."}</span></div>
             </div>
           </section>
 

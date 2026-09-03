@@ -1,6 +1,6 @@
 import { requestIsAuthenticated } from "@/lib/auth";
 import { buildOptimaWorkbook } from "@/lib/optima";
-import { isCompleteRow, type OptimaRow, type SourceKind } from "@/lib/types";
+import { isReviewableRow, type OptimaRow, type SourceKind } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -17,8 +17,8 @@ export async function POST(request: Request) {
     if (rows.length === 0) {
       return Response.json({ error: "Não existem linhas para exportar." }, { status: 400 });
     }
-    if (rows.some((row) => !row.approved || !isCompleteRow(row))) {
-      return Response.json({ error: "Valide todas as linhas obrigatórias antes da exportação." }, { status: 400 });
+    if (rows.some((row) => !row.approved || !isReviewableRow(row))) {
+      return Response.json({ error: "Preencha e confirme todos os campos provisórios antes da exportação." }, { status: 400 });
     }
 
     const buffer = await buildOptimaWorkbook(rows, sourceKind);

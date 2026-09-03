@@ -41,8 +41,8 @@ export async function loadValidatedRows(sourceKind: SourceKind): Promise<OptimaR
     rows.push({
       rowId: crypto.randomUUID(),
       approved: false,
-      confidence: 1,
-      provisionalFields: [],
+      confidence: sourceKind === "pdf" ? 0.8 : 1,
+      provisionalFields: sourceKind === "pdf" ? ["SEP_1", "MAT_2"] : [],
       cells,
     });
   });
