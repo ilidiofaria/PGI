@@ -36,6 +36,17 @@ test("o cenário PDF contém 53 linhas e 68 unidades", async () => {
   assert.equal(dataRows.reduce((sum, row) => sum + Number(row.getCell(2).value || 0), 0), 68);
 });
 
+test("o cenário PDF converte 8/14/8 em CX14 e 8/16/8 em CX16", async () => {
+  const { dataRows } = await inspectTemplate("pdf-import.xlsx");
+  const exteriorRows = dataRows.filter((row) => String(row.getCell(41).value || "").startsWith("VJe"));
+  const interiorRows = dataRows.filter((row) => String(row.getCell(41).value || "").startsWith("VPe"));
+
+  assert.equal(exteriorRows.length, 40);
+  assert.equal(interiorRows.length, 13);
+  assert.ok(exteriorRows.every((row) => row.getCell(4).value === "CX14"));
+  assert.ok(interiorRows.every((row) => row.getCell(4).value === "CX16"));
+});
+
 test("o cenário DWG contém 6 linhas e 82 unidades", async () => {
   const { dataRows } = await inspectTemplate("dwg-import.xlsx");
   assert.equal(dataRows.length, 6);

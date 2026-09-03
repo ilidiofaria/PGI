@@ -68,7 +68,7 @@ export async function POST(request: Request) {
 
     const defaults: Record<string, CellValue> = sourceKind === "dwg"
       ? { PRODUCTO: "VD", MAT_1: "6CLXTM70-33II", SEP_1: "CX16", MAT_2: "44.1STDIC", Wor1_1: "ARTD", Wor1_2: "TEMPERA", Wor3_1: "ARI", Wor0_4: "SRVINST", CUSTOMER: "01107" }
-      : { PRODUCTO: "VD", MAT_1: "8MC.CG1.0T", SEP_1: "CX16", MAT_2: "44.2STD", Wor1_1: "ARTD", Wor1_2: "TEMPERA", Wor3_1: "ARI", Wor0_4: "SRVINST", CUSTOMER: "01048" };
+      : { PRODUCTO: "VD", MAT_1: "8MC.CG1.0T", MAT_2: "44.2STD", Wor1_1: "ARTD", Wor1_2: "TEMPERA", Wor3_1: "ARI", Wor0_4: "SRVINST", CUSTOMER: "01048" };
 
     const rows = await processWithLlm({
       provider,

@@ -5,12 +5,13 @@ const EXTRACTION_PROMPT = `
 Analisa integralmente todas as páginas do PDF fornecido. O documento contém uma listagem ou desenho técnico de vidros a encomendar.
 
 Devolve exclusivamente JSON válido, sem markdown, no formato:
-{"rows":[{"ID":"","QTY":"","MAT_1":"","SEP_1":"","MAT_2":"","PRODUCTO":"VD","DIM_X":"","DIM_Y":"","ORDER":"","CUSTOMER":"","Notes":"","confidence":0.0,"provisionalFields":[]}]}
+{"rows":[{"ID":"","QTY":"","MAT_1":"","SEP_1":"","MAT_2":"","PRODUCTO":"VD","DIM_X":"","DIM_Y":"","ORDER":"","CUSTOMER":"","Notes":"","sourceComposition":"","confidence":0.0,"provisionalFields":[]}]}
 
 Regras obrigatórias:
 - Cria uma linha por referência e dimensão distintas. Não omitas páginas, quadros ou referências.
 - Mantém as dimensões em milímetros e a quantidade como número inteiro.
 - Usa Notes para a referência do vão ou janela quando existir.
+- Regista em sourceComposition a composição exata indicada no documento. Para vidro 8/14/8, SEP_1 deve ser CX14; para vidro 8/16/8, SEP_1 deve ser CX16. Em geral, usa a medida central da composição como código CX.
 - Não inventes dimensões ou quantidades. Quando um campo técnico necessário não estiver legível, deixa-o vazio e inclui o nome em provisionalFields.
 - PRODUCTO pode assumir VD quando o documento representar vidro duplo; caso contrário, deixa vazio.
 - Confidence deve refletir a confiança na leitura da linha, entre 0 e 1.
@@ -29,6 +30,16 @@ function parseJson(text: string) {
   const rows = Array.isArray(parsed) ? parsed : parsed.rows;
   if (!Array.isArray(rows)) throw new Error("O modelo não devolveu uma lista de linhas válida.");
   return rows as Array<Record<string, unknown>>;
+}
+
+function applySpacerCode(row: Record<string, unknown>) {
+  const composition = String(row.sourceComposition ?? "");
+  const match = composition.match(/\d+(?:[.,]\d+)?\s*\/\s*(\d+(?:[.,]\d+)?)\s*\/\s*\d+(?:[.,]\d+)?/);
+  if (!match) return row;
+
+  const spacer = Number(match[1].replace(",", "."));
+  if (!Number.isFinite(spacer)) return row;
+  return { ...row, SEP_1: `CX${Number.isInteger(spacer) ? spacer : String(spacer).replace(".", ",")}` };
 }
 
 async function callOpenAI(apiKey: string, model: string, fileName: string, pdf: Buffer) {
@@ -112,5 +123,5 @@ export async function processWithLlm(options: {
   const rawRows = options.provider === "openai"
     ? await callOpenAI(options.apiKey, options.model, options.fileName, options.pdf)
     : await callAnthropic(options.apiKey, options.model, options.pdf);
-  return normalizeLlmRows(rawRows, options.defaults);
+  return normalizeLlmRows(rawRows.map(applySpacerCode), options.defaults);
 }
