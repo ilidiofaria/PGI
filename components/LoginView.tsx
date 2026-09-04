@@ -33,10 +33,6 @@ export function LoginView() {
       <section className="login-panel">
         <div className="brand brand-large">
           <Image src="/brand/pgi-logo.svg" alt="PGI Peões Glass Industry" width={56} height={56} priority />
-          <div>
-            <strong>PGI</strong>
-            <span>Preparação de importação Optima</span>
-          </div>
         </div>
         <div className="login-heading">
           <span className="icon-box"><LockKeyhole size={20} /></span>

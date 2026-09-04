@@ -186,7 +186,6 @@ export function PrototypeApp() {
       <header className="topbar">
         <div className="brand">
           <Image src="/brand/pgi-logo.svg" alt="PGI Peões Glass Industry" width={43} height={43} priority />
-          <div><strong>PGI</strong><span>Preparação de importação Optima</span></div>
         </div>
         <div className="topbar-actions">
           <span className="environment"><span />Demonstração</span>
