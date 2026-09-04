@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import {
   AlertCircle, Check, CheckCircle2, Download, Eye, FileSpreadsheet,
-  FileUp, KeyRound, LoaderCircle, LogOut, Plus, Search, ShieldCheck, Sparkles,
+  FileUp, KeyRound, LoaderCircle, Plus, Search, ShieldCheck, Sparkles,
   Trash2, UploadCloud, X,
 } from "lucide-react";
+import { AppHeader } from "@/components/AppHeader";
 import { blankRow, isCompleteRow, type OptimaRow, type ProcessResponse, type Provider, type SourceKind } from "@/lib/types";
 
 const MODELS: Record<Provider, string> = {
@@ -176,22 +176,9 @@ export function PrototypeApp() {
     }
   }
 
-  async function logout() {
-    await fetch("/api/logout", { method: "POST" });
-    window.location.reload();
-  }
-
   return (
     <main className="app-shell">
-      <header className="topbar">
-        <div className="brand">
-          <Image src="/brand/pgi-logo.svg" alt="PGI Peões Glass Industry" width={43} height={43} priority />
-        </div>
-        <div className="topbar-actions">
-          <span className="environment"><span />Demonstração</span>
-          <button className="icon-button" onClick={logout} title="Terminar sessão" aria-label="Terminar sessão"><LogOut size={18} /></button>
-        </div>
-      </header>
+      <AppHeader />
 
       <div className="content">
         <div className="page-heading">
