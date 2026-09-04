@@ -43,8 +43,9 @@ export function requestIsAuthenticated(request: Request) {
 }
 
 export function credentialsAreValid(username: string, password: string) {
-  const expectedUser = process.env.DEMO_USERNAME || "pgi.demo";
-  const expectedPassword = process.env.DEMO_PASSWORD || "PGI2026!";
+  const expectedUser = process.env.DEMO_USERNAME || "demo";
+  const expectedPassword = process.env.DEMO_PASSWORD;
+  if (!expectedPassword) return false;
   const userMatches = safeEqual(username, expectedUser);
   const passwordMatches = safeEqual(password, expectedPassword);
   return userMatches && passwordMatches;
