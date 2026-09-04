@@ -7,6 +7,7 @@ import {
   Trash2, UploadCloud, X,
 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
+import { addImportHistory, createImportHistoryItem, updateImportHistory } from "@/lib/import-history";
 import { blankRow, isCompleteRow, type OptimaRow, type ProcessResponse, type Provider, type SourceKind } from "@/lib/types";
 
 const MODELS: Record<Provider, string> = {
@@ -22,8 +23,13 @@ const EDITABLE_COLUMNS = [
   ["CUSTOMER", "Cliente", "col-md"], ["Notes", "Referência / notas", "col-xl"],
 ] as const;
 
+function countUnits(rows: OptimaRow[]) {
+  return rows.reduce((sum, row) => sum + (Number(row.cells.QTY) || 0), 0);
+}
+
 export function PrototypeApp() {
   const fileInput = useRef<HTMLInputElement>(null);
+  const historyId = useRef<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [provider, setProvider] = useState<Provider>("demo");
   const [model, setModel] = useState("");
@@ -52,7 +58,7 @@ export function PrototypeApp() {
     return rows.filter((row) => Object.values(row.cells).some((value) => String(value).toLowerCase().includes(normalized)));
   }, [query, rows]);
 
-  const units = useMemo(() => rows.reduce((sum, row) => sum + (Number(row.cells.QTY) || 0), 0), [rows]);
+  const units = useMemo(() => countUnits(rows), [rows]);
   const area = useMemo(() => rows.reduce((sum, row) => {
     const quantity = Number(row.cells.QTY) || 0;
     const width = Number(row.cells.DIM_X) || 0;
@@ -78,6 +84,7 @@ export function PrototypeApp() {
     setWarnings([]);
     setRemotePreview(undefined);
     setLocalPreview(extension === "pdf" ? URL.createObjectURL(nextFile) : undefined);
+    historyId.current = null;
     setError("");
   }
 
@@ -91,6 +98,9 @@ export function PrototypeApp() {
       return;
     }
 
+    const historyItem = createImportHistoryItem(file, provider, model);
+    addImportHistory(historyItem);
+    historyId.current = historyItem.id;
     setLoading(true);
     setError("");
     const form = new FormData();
@@ -110,43 +120,94 @@ export function PrototypeApp() {
       setRemotePreview(data.previewUrl);
       setCustomer(String(data.rows[0]?.cells.CUSTOMER || ""));
       setOrder(String(data.rows[0]?.cells.ORDER || ""));
+      const processedAt = new Date().toISOString();
+      updateImportHistory(historyItem.id, {
+        updatedAt: processedAt,
+        processedAt,
+        fileHash: data.fileHash,
+        sourceKind: data.sourceKind,
+        mode: data.mode,
+        status: "A validar",
+        rowCount: data.rows.length,
+        approvedCount: data.rows.filter((row) => row.approved).length,
+        unitCount: countUnits(data.rows),
+        warnings: data.warnings || [],
+      });
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Não foi possível processar o ficheiro.");
+      const message = caught instanceof Error ? caught.message : "Não foi possível processar o ficheiro.";
+      setError(message);
+      updateImportHistory(historyItem.id, {
+        updatedAt: new Date().toISOString(),
+        status: "Erro",
+        errorMessage: message,
+      });
     } finally {
       setLoading(false);
     }
   }
 
+  function syncValidationHistory(nextRows: OptimaRow[]) {
+    if (!historyId.current) return;
+    const approvedCount = nextRows.filter((row) => row.approved).length;
+    const validated = nextRows.length > 0
+      && approvedCount === nextRows.length
+      && nextRows.every(isCompleteRow);
+    const updatedAt = new Date().toISOString();
+    updateImportHistory(historyId.current, {
+      updatedAt,
+      validatedAt: validated ? updatedAt : undefined,
+      exportedAt: undefined,
+      outputFileName: undefined,
+      status: validated ? "Validado" : "A validar",
+      rowCount: nextRows.length,
+      approvedCount,
+      unitCount: countUnits(nextRows),
+      warnings,
+    });
+  }
+
   function updateCell(rowId: string, field: string, value: string) {
-    setRows((current) => current.map((row) => row.rowId === rowId
+    const nextRows = rows.map((row) => row.rowId === rowId
       ? { ...row, approved: false, cells: { ...row.cells, [field]: value } }
-      : row));
+      : row);
+    setRows(nextRows);
+    syncValidationHistory(nextRows);
   }
 
   function toggleApproval(rowId: string) {
-    setRows((current) => current.map((row) => row.rowId === rowId && isCompleteRow(row)
+    const nextRows = rows.map((row) => row.rowId === rowId && isCompleteRow(row)
       ? { ...row, approved: !row.approved }
-      : row));
+      : row);
+    setRows(nextRows);
+    syncValidationHistory(nextRows);
   }
 
   function approveAll() {
-    setRows((current) => current.map((row) => ({ ...row, approved: isCompleteRow(row) })));
+    const nextRows = rows.map((row) => ({ ...row, approved: isCompleteRow(row) }));
+    setRows(nextRows);
+    syncValidationHistory(nextRows);
   }
 
   function addBlankRow() {
-    setRows((current) => [...current, blankRow(current.length + 1)]);
+    const nextRows = [...rows, blankRow(rows.length + 1)];
+    setRows(nextRows);
+    syncValidationHistory(nextRows);
   }
 
   function removeRow(rowId: string) {
-    setRows((current) => current.filter((row) => row.rowId !== rowId));
+    const nextRows = rows.filter((row) => row.rowId !== rowId);
+    setRows(nextRows);
+    syncValidationHistory(nextRows);
   }
 
   function applyParameters() {
-    setRows((current) => current.map((row) => ({
+    const nextRows = rows.map((row) => ({
       ...row,
       approved: false,
       cells: { ...row.cells, CUSTOMER: customer, ORDER: order },
-    })));
+    }));
+    setRows(nextRows);
+    syncValidationHistory(nextRows);
   }
 
   async function exportExcel() {
@@ -169,6 +230,18 @@ export function PrototypeApp() {
       anchor.download = "IMPORT_EXCEL.xlsx";
       anchor.click();
       URL.revokeObjectURL(url);
+      if (historyId.current) {
+        const exportedAt = new Date().toISOString();
+        updateImportHistory(historyId.current, {
+          updatedAt: exportedAt,
+          exportedAt,
+          status: "Exportado",
+          outputFileName: "IMPORT_EXCEL.xlsx",
+          approvedCount: rows.filter((row) => row.approved).length,
+          rowCount: rows.length,
+          unitCount: countUnits(rows),
+        });
+      }
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Não foi possível gerar o Excel.");
     } finally {

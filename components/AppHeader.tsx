@@ -3,11 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileInput, LogOut, Waypoints } from "lucide-react";
+import { FileClock, FileInput, LogOut, Waypoints } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/", label: "Processamento", icon: FileInput },
   { href: "/mapeamentos", label: "Mapeamentos", icon: Waypoints },
+  { href: "/historico", label: "Histórico", icon: FileClock },
 ];
 
 export function AppHeader() {

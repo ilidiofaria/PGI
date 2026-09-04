@@ -13,6 +13,7 @@ export type OptimaRow = {
 export type ProcessResponse = {
   mode: string;
   sourceKind: SourceKind;
+  fileHash: string;
   rows: OptimaRow[];
   previewUrl?: string;
   warnings: string[];

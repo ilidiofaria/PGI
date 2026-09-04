@@ -43,6 +43,7 @@ export async function POST(request: Request) {
       return Response.json({
         mode: "Demonstração validada",
         sourceKind,
+        fileHash,
         rows,
         previewUrl: sourceKind === "dwg" ? "/demo/3.01-vaos-exteriores.pdf" : undefined,
         warnings: ["Resultado inicial sujeito a validação humana antes da importação no Optima."],
@@ -81,6 +82,7 @@ export async function POST(request: Request) {
     return Response.json({
       mode: provider === "openai" ? `OpenAI · ${model}` : `Anthropic · ${model}`,
       sourceKind,
+      fileHash,
       rows,
       previewUrl: sourceKind === "dwg" ? "/demo/3.01-vaos-exteriores.pdf" : undefined,
       warnings: ["Os campos técnicos preenchidos pelo modelo devem ser confirmados por uma pessoa."],
