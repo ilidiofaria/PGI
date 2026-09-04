@@ -1,16 +1,15 @@
-import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { requestIsAuthenticated } from "@/lib/auth";
 import { loadValidatedRows } from "@/lib/optima";
 import { processWithLlm } from "@/lib/llm";
-import type { CellValue, Provider, SourceKind } from "@/lib/types";
+import { classifySourceKind, DEMO_DWG_SHA256, sha256 } from "@/lib/source-kind";
+import type { CellValue, Provider } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
 
 const MAX_FILE_SIZE = 4_400_000;
-const DEMO_DWG_SHA256 = "DE3272C1B34747EDF1DE4869C4341B0DB2C240A2D89FE83308308A51815B25ED";
 
 export async function POST(request: Request) {
   if (!requestIsAuthenticated(request)) {
@@ -35,8 +34,9 @@ export async function POST(request: Request) {
     if (extension !== "pdf" && extension !== "dwg") {
       return Response.json({ error: "Formato não suportado. Utilize PDF ou DWG." }, { status: 400 });
     }
-    const sourceKind = extension as SourceKind;
     const fileBuffer = Buffer.from(await file.arrayBuffer());
+    const fileHash = sha256(fileBuffer);
+    const sourceKind = classifySourceKind(extension, fileHash);
 
     if (provider === "demo") {
       const rows = await loadValidatedRows(sourceKind);
@@ -55,9 +55,8 @@ export async function POST(request: Request) {
 
     let pdfBuffer = fileBuffer;
     let llmFileName = file.name;
-    if (sourceKind === "dwg") {
-      const hash = createHash("sha256").update(fileBuffer).digest("hex").toUpperCase();
-      if (hash !== DEMO_DWG_SHA256) {
+    if (extension === "dwg") {
+      if (fileHash !== DEMO_DWG_SHA256) {
         return Response.json({
           error: "Nesta demonstração, o processamento DWG está limitado ao ficheiro de referência fornecido.",
         }, { status: 400 });
