@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Preparação ERP",
-  description: "Protótipo de preparação de ficheiros de importação para o ERP.",
+  description: "Preparação de ficheiros de importação para o ERP.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

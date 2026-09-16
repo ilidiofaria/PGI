@@ -14,8 +14,8 @@ export type MappingItem = {
 };
 
 export const DEFAULT_MAPPINGS: MappingItem[] = [
-  { id: "map-001", category: "Material", context: "Listagem PDF", source: "VIDRIO 8/14/8 - primeiro vidro", target: "MAT_1", output: "8MC.CG1.0T", evidence: "Histórico do protótipo", status: "Provisório", active: true },
-  { id: "map-002", category: "Material", context: "Listagem PDF", source: "VIDRIO 8/16/8 - primeiro vidro", target: "MAT_1", output: "8MC.CG1.0T", evidence: "Histórico do protótipo", status: "Provisório", active: true },
+  { id: "map-001", category: "Material", context: "Listagem PDF", source: "VIDRIO 8/14/8 - primeiro vidro", target: "MAT_1", output: "8MC.CG1.0T", evidence: "Configuração de referência", status: "Provisório", active: true },
+  { id: "map-002", category: "Material", context: "Listagem PDF", source: "VIDRIO 8/16/8 - primeiro vidro", target: "MAT_1", output: "8MC.CG1.0T", evidence: "Configuração de referência", status: "Provisório", active: true },
   { id: "map-003", category: "Material", context: "Listagem PDF", source: "Segundo vidro de 8 mm", target: "MAT_2", output: "44.2STD", evidence: "Não suportado pelo PDF", status: "Provisório", active: true },
   { id: "map-004", category: "Material", context: "Vãos exteriores", source: "Cool-lite Xtreme 70/33 II 6mm", target: "MAT_1", output: "6CLXTM70-33II", evidence: "Descrição explícita", status: "Confirmado", active: true },
   { id: "map-005", category: "Material", context: "Vãos exteriores", source: "44.1 Inc.", target: "MAT_2", output: "44.1STDIC", evidence: "Descrição explícita", status: "Confirmado", active: true },

@@ -53,7 +53,7 @@ export function MappingsApp() {
       <div className="content mapping-content">
         <div className="page-heading mapping-heading">
           <div>
-            <p className="eyebrow">Configuração do protótipo</p>
+            <p className="eyebrow">Configuração</p>
             <h1>Mapeamentos para o ERP</h1>
             <p className="page-description">Equivalências aplicadas aos campos que não resultam diretamente dos documentos.</p>
           </div>
@@ -114,7 +114,7 @@ export function MappingsApp() {
           {provisional > 0 && <div className="mapping-caution"><AlertTriangle size={16} /><span>Os mapeamentos provisórios requerem validação do utilizador antes de utilização operacional.</span></div>}
         </section>
       </div>
-      <footer><span>Protótipo de demonstração</span><span>Os mapeamentos desta página não alteram o processamento nem são persistidos.</span></footer>
+      <footer><span>Os mapeamentos desta página não alteram o processamento nem são persistidos.</span></footer>
     </main>
   );
 }

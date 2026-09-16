@@ -51,7 +51,6 @@ export function LoginView() {
             {loading ? "A validar..." : "Entrar"}<ArrowRight size={17} />
           </button>
         </form>
-        <p className="login-note">Ambiente de demonstração. Os dados não são armazenados após o processamento.</p>
       </section>
     </main>
   );

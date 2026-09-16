@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "Selecione um ficheiro PDF ou DWG." }, { status: 400 });
     }
     if (file.size > MAX_FILE_SIZE) {
-      return Response.json({ error: "O ficheiro excede o limite de 4,4 MB desta demonstração." }, { status: 413 });
+      return Response.json({ error: "O ficheiro excede o limite de 4,4 MB." }, { status: 413 });
     }
 
     const extension = file.name.split(".").pop()?.toLowerCase();
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     if (provider === "demo") {
       const rows = await loadValidatedRows(sourceKind);
       return Response.json({
-        mode: "Demonstração validada",
+        mode: "Dados de referência",
         sourceKind,
         fileHash,
         rows,
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
     if (extension === "dwg") {
       if (fileHash !== DEMO_DWG_SHA256) {
         return Response.json({
-          error: "Nesta demonstração, o processamento DWG está limitado ao ficheiro de referência fornecido.",
+          error: "O processamento DWG está limitado ao ficheiro de referência fornecido.",
         }, { status: 400 });
       }
       pdfBuffer = await readFile(path.join(process.cwd(), "fixtures", "dwg-converted.pdf"));

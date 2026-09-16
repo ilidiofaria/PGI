@@ -293,7 +293,7 @@ export function PrototypeApp() {
             <div className="provider-tabs">
               {(["demo", "openai", "anthropic"] as Provider[]).map((option) => (
                 <button key={option} className={provider === option ? "selected" : ""} onClick={() => { setProvider(option); setModel(MODELS[option]); }}>
-                  {option === "demo" ? "Demonstração" : option === "openai" ? "OpenAI" : "Anthropic"}
+                  {option === "demo" ? "Dados de referência" : option === "openai" ? "OpenAI" : "Anthropic"}
                 </button>
               ))}
             </div>
@@ -373,7 +373,6 @@ export function PrototypeApp() {
           </section>
         </>}
       </div>
-      <footer><span>Protótipo de demonstração</span><span>As chaves de API são utilizadas apenas durante o pedido e não são armazenadas.</span></footer>
     </main>
   );
 }

@@ -33,7 +33,6 @@ export function AppHeader() {
         })}
       </nav>
       <div className="topbar-actions">
-        <span className="environment"><span />Demonstração</span>
         <button className="icon-button" onClick={logout} title="Terminar sessão" aria-label="Terminar sessão"><LogOut size={18} /></button>
       </div>
     </header>

@@ -29,7 +29,7 @@ function formatSize(bytes: number) {
 }
 
 function providerLabel(item: ImportHistoryItem) {
-  if (item.provider === "demo") return "Demonstração";
+  if (item.provider === "demo") return "Dados de referência";
   return `${item.provider === "openai" ? "OpenAI" : "Anthropic"} · ${item.model}`;
 }
 
@@ -69,9 +69,9 @@ export function HistoryApp() {
       <div className="content history-content">
         <div className="page-heading history-heading">
           <div>
-            <p className="eyebrow">Rastreabilidade do protótipo</p>
+            <p className="eyebrow">Rastreabilidade</p>
             <h1>Histórico de importações</h1>
-            <p className="page-description">Registo das operações realizadas neste navegador, sem dados de demonstração.</p>
+            <p className="page-description">Registo das operações realizadas neste navegador.</p>
           </div>
           <Link className="button button-primary" href="/"><FileSpreadsheet size={16} />Nova importação</Link>
         </div>
@@ -145,7 +145,7 @@ export function HistoryApp() {
           {selected.status === "Exportado" && <div className="history-detail-message success"><CheckCircle2 size={17} /><span>Ficheiro preparado e exportado para utilização no ERP.</span></div>}
         </section>}
       </div>
-      <footer><span>Protótipo de demonstração</span><span>O histórico permanece apenas neste navegador e não inclui chaves de API.</span></footer>
+      <footer><span>O histórico permanece apenas neste navegador e não inclui chaves de API.</span></footer>
     </main>
   );
 }

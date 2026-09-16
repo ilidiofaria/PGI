@@ -114,7 +114,7 @@ export function createImportHistoryItem(file: File, provider: Provider, model: s
     fileType: file.name.split(".").pop()?.toUpperCase() || "FICHEIRO",
     fileSize: file.size,
     provider,
-    model: provider === "demo" ? "Demonstração" : model,
+    model: provider === "demo" ? "Dados de referência" : model,
     status: "A processar",
     rowCount: 0,
     approvedCount: 0,
