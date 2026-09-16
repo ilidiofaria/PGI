@@ -23,7 +23,7 @@ async function inspectTemplate(name) {
   return { headers, dataRows };
 }
 
-test("os templates mantêm as 62 colunas Optima", async () => {
+test("os templates mantêm as 62 colunas ERP", async () => {
   for (const template of ["pdf-import.xlsx", "dwg-import.xlsx"]) {
     const { headers } = await inspectTemplate(template);
     assert.deepEqual(headers, expectedHeaders);

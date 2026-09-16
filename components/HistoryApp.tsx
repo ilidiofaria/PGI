@@ -142,7 +142,7 @@ export function HistoryApp() {
           </div>
           {selected.warnings.length > 0 && <div className="history-detail-message warning"><AlertCircle size={17} /><span>{selected.warnings.join(" ")}</span></div>}
           {selected.errorMessage && <div className="history-detail-message error"><AlertCircle size={17} /><span>{selected.errorMessage}</span></div>}
-          {selected.status === "Exportado" && <div className="history-detail-message success"><CheckCircle2 size={17} /><span>Ficheiro preparado e exportado para utilização no Optima.</span></div>}
+          {selected.status === "Exportado" && <div className="history-detail-message success"><CheckCircle2 size={17} /><span>Ficheiro preparado e exportado para utilização no ERP.</span></div>}
         </section>}
       </div>
       <footer><span>Protótipo de demonstração</span><span>O histórico permanece apenas neste navegador e não inclui chaves de API.</span></footer>

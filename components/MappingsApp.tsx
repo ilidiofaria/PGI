@@ -54,7 +54,7 @@ export function MappingsApp() {
         <div className="page-heading mapping-heading">
           <div>
             <p className="eyebrow">Configuração do protótipo</p>
-            <h1>Mapeamentos para o Optima</h1>
+            <h1>Mapeamentos para o ERP</h1>
             <p className="page-description">Equivalências aplicadas aos campos que não resultam diretamente dos documentos.</p>
           </div>
           <div className="heading-actions">
@@ -83,15 +83,15 @@ export function MappingsApp() {
 
           <div className="mapping-table-scroll">
             <table className="mapping-table">
-              <thead><tr><th>Categoria</th><th>Contexto</th><th>Valor identificado</th><th>Campo Optima</th><th>Código Optima</th><th>Evidência</th><th>Estado</th><th className="mapping-active-column">Ativo</th><th className="action-cell" /></tr></thead>
+              <thead><tr><th>Categoria</th><th>Contexto</th><th>Valor identificado</th><th>Campo ERP</th><th>Código ERP</th><th>Evidência</th><th>Estado</th><th className="mapping-active-column">Ativo</th><th className="action-cell" /></tr></thead>
               <tbody>
                 {filteredMappings.map((mapping) => (
                   <tr key={mapping.id} className={!mapping.active ? "mapping-row-inactive" : ""}>
                     <td><select aria-label="Categoria" value={mapping.category} onChange={(event) => updateMapping(mapping.id, "category", event.target.value as MappingCategory)}><option>Material</option><option>Cliente</option><option>Produto</option><option>Operação</option></select></td>
                     <td><input aria-label="Contexto" value={mapping.context} onChange={(event) => updateMapping(mapping.id, "context", event.target.value)} /></td>
                     <td className="mapping-source"><input aria-label="Valor identificado" value={mapping.source} onChange={(event) => updateMapping(mapping.id, "source", event.target.value)} /></td>
-                    <td><input aria-label="Campo Optima" value={mapping.target} onChange={(event) => updateMapping(mapping.id, "target", event.target.value)} /></td>
-                    <td><input className="mapping-code" aria-label="Código Optima" value={mapping.output} onChange={(event) => updateMapping(mapping.id, "output", event.target.value)} /></td>
+                    <td><input aria-label="Campo ERP" value={mapping.target} onChange={(event) => updateMapping(mapping.id, "target", event.target.value)} /></td>
+                    <td><input className="mapping-code" aria-label="Código ERP" value={mapping.output} onChange={(event) => updateMapping(mapping.id, "output", event.target.value)} /></td>
                     <td><input aria-label="Evidência" value={mapping.evidence} onChange={(event) => updateMapping(mapping.id, "evidence", event.target.value)} /></td>
                     <td><select className={`status-select ${mapping.status === "Confirmado" ? "confirmed" : "provisional"}`} aria-label="Estado" value={mapping.status} onChange={(event) => updateMapping(mapping.id, "status", event.target.value as MappingStatus)}><option>Confirmado</option><option>Provisório</option></select></td>
                     <td className="mapping-active-column"><label className="switch-control"><input type="checkbox" checked={mapping.active} onChange={(event) => updateMapping(mapping.id, "active", event.target.checked)} aria-label={`Ativar mapeamento ${mapping.target || mapping.id}`} /><span aria-hidden="true" /></label></td>

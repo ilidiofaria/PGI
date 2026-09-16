@@ -46,7 +46,7 @@ export async function POST(request: Request) {
         fileHash,
         rows,
         previewUrl: sourceKind === "dwg" ? "/demo/3.01-vaos-exteriores.pdf" : undefined,
-        warnings: ["Resultado inicial sujeito a validação humana antes da importação no Optima."],
+        warnings: ["Resultado inicial sujeito a validação humana antes da importação no ERP."],
       });
     }
 

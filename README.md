@@ -1,6 +1,6 @@
-# Preparação de importação Optima
+# Preparação de importação ERP
 
-Protótipo demonstrativo para converter listagens de vidro em PDF ou o DWG de referência num ficheiro `IMPORT_EXCEL.xlsx` compatível com o Optima.
+Protótipo demonstrativo para converter listagens de vidro em PDF ou o DWG de referência num ficheiro `IMPORT_EXCEL.xlsx` compatível com o ERP.
 
 ## Fluxo
 

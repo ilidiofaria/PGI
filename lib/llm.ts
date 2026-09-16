@@ -15,7 +15,7 @@ Regras obrigatórias:
 - Não inventes dimensões ou quantidades. Quando um campo técnico necessário não estiver legível, deixa-o vazio e inclui o nome em provisionalFields.
 - PRODUCTO pode assumir VD quando o documento representar vidro duplo; caso contrário, deixa vazio.
 - Confidence deve refletir a confiança na leitura da linha, entre 0 e 1.
-- O resultado será obrigatoriamente validado por uma pessoa antes de ser importado no Optima.
+- O resultado será obrigatoriamente validado por uma pessoa antes de ser importado no ERP.
 `;
 
 function toBase64(buffer: Buffer) {

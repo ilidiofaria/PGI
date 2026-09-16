@@ -255,7 +255,7 @@ export function PrototypeApp() {
 
       <div className="content">
         <div className="page-heading">
-          <div><p className="eyebrow">Conversão assistida</p><h1>Preparar ficheiro para o Optima</h1></div>
+          <div><p className="eyebrow">Conversão assistida</p><h1>Preparar ficheiro para o ERP</h1></div>
           <div className="stepper" aria-label="Etapas do processo">
             {["Carregamento", "Processamento", "Validação", "Exportação"].map((step, index) => {
               const active = rows.length ? (readyToExport ? 3 : 2) : loading ? 1 : 0;
@@ -339,7 +339,7 @@ export function PrototypeApp() {
 
             <div className="table-panel">
               <div className="panel-header table-toolbar">
-                <div><FileSpreadsheet size={18} /><strong>Dados para o Optima</strong></div>
+                <div><FileSpreadsheet size={18} /><strong>Dados para o ERP</strong></div>
                 <div className="toolbar-actions">
                   <label className="search-box"><Search size={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Pesquisar" /></label>
                   <button className="button button-quiet" onClick={addBlankRow}><Plus size={16} />Adicionar linha</button>
@@ -368,7 +368,7 @@ export function PrototypeApp() {
           <section className="export-bar">
             <div><span className={readyToExport ? "export-icon ready" : "export-icon"}><FileSpreadsheet size={22} /></span><div><strong>IMPORT_EXCEL.xlsx</strong><span>{readyToExport ? "Ficheiro pronto para gerar." : "Valide todas as linhas antes de exportar."}</span></div></div>
             <button className="button button-primary" disabled={!readyToExport || exporting} onClick={exportExcel}>
-              {exporting ? <LoaderCircle className="spin" size={18} /> : <Download size={18} />}{exporting ? "A gerar..." : "Exportar para o Optima"}
+              {exporting ? <LoaderCircle className="spin" size={18} /> : <Download size={18} />}{exporting ? "A gerar..." : "Exportar para o ERP"}
             </button>
           </section>
         </>}
