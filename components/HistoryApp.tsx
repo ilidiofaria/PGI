@@ -145,7 +145,7 @@ export function HistoryApp() {
           {selected.status === "Exportado" && <div className="history-detail-message success"><CheckCircle2 size={17} /><span>Ficheiro preparado e exportado para utilização no Optima.</span></div>}
         </section>}
       </div>
-      <footer><span>Protótipo de demonstração · PGI</span><span>O histórico permanece apenas neste navegador e não inclui chaves de API.</span></footer>
+      <footer><span>Protótipo de demonstração</span><span>O histórico permanece apenas neste navegador e não inclui chaves de API.</span></footer>
     </main>
   );
 }

@@ -111,10 +111,10 @@ export function MappingsApp() {
             <span><strong>QTY, DIM_X, DIM_Y e Notes</strong> Extração direta do documento.</span>
             <span><strong>ID e ORDER</strong> Numeração sequencial e introdução manual.</span>
           </div>
-          {provisional > 0 && <div className="mapping-caution"><AlertTriangle size={16} /><span>Os mapeamentos provisórios requerem validação da PGI antes de utilização operacional.</span></div>}
+          {provisional > 0 && <div className="mapping-caution"><AlertTriangle size={16} /><span>Os mapeamentos provisórios requerem validação do utilizador antes de utilização operacional.</span></div>}
         </section>
       </div>
-      <footer><span>Protótipo de demonstração · PGI</span><span>Os mapeamentos desta página não alteram o processamento nem são persistidos.</span></footer>
+      <footer><span>Protótipo de demonstração</span><span>Os mapeamentos desta página não alteram o processamento nem são persistidos.</span></footer>
     </main>
   );
 }

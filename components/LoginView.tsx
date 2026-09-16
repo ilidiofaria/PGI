@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import Image from "next/image";
 import { ArrowRight, LockKeyhole } from "lucide-react";
 
 export function LoginView() {
@@ -31,9 +30,6 @@ export function LoginView() {
   return (
     <main className="login-page">
       <section className="login-panel">
-        <div className="brand brand-large">
-          <Image src="/brand/pgi-logo.svg" alt="PGI Peões Glass Industry" width={56} height={56} priority />
-        </div>
         <div className="login-heading">
           <span className="icon-box"><LockKeyhole size={20} /></span>
           <div>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PGI · Preparação Optima",
+  title: "Preparação Optima",
   description: "Protótipo de preparação de ficheiros de importação para o Optima.",
 };
 

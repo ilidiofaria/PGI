@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileClock, FileInput, LogOut, Waypoints } from "lucide-react";
@@ -21,9 +20,6 @@ export function AppHeader() {
 
   return (
     <header className="topbar">
-      <Link className="brand" href="/" aria-label="PGI - Processamento">
-        <Image src="/brand/pgi-logo.svg" alt="PGI Peões Glass Industry" width={43} height={43} priority />
-      </Link>
       <nav className="app-nav" aria-label="Navegação principal">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;

@@ -1,4 +1,4 @@
-# PGI · Preparação de importação Optima
+# Preparação de importação Optima
 
 Protótipo demonstrativo para converter listagens de vidro em PDF ou o DWG de referência num ficheiro `IMPORT_EXCEL.xlsx` compatível com o Optima.
 

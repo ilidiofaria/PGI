@@ -22,10 +22,10 @@ export const DEFAULT_MAPPINGS: MappingItem[] = [
   { id: "map-006", category: "Cliente", context: "Listagem PDF", source: "Engimov - Construções, S.A", target: "CUSTOMER", output: "01048", evidence: "Valor predefinido", status: "Provisório", active: true },
   { id: "map-007", category: "Cliente", context: "Vãos exteriores", source: "3.01 Vãos exteriores", target: "CUSTOMER", output: "01107", evidence: "Valor predefinido", status: "Provisório", active: true },
   { id: "map-008", category: "Produto", context: "Todos", source: "Composição com dois vidros", target: "PRODUCTO", output: "VD", evidence: "Regra de negócio", status: "Confirmado", active: true },
-  { id: "map-009", category: "Operação", context: "Todos", source: "Valor predefinido", target: "Wor1_1", output: "ARTD", evidence: "Requer validação PGI", status: "Provisório", active: true },
-  { id: "map-010", category: "Operação", context: "Todos", source: "Valor predefinido", target: "Wor1_2", output: "TEMPERA", evidence: "Requer validação PGI", status: "Provisório", active: true },
-  { id: "map-011", category: "Operação", context: "Todos", source: "Valor predefinido", target: "Wor3_1", output: "ARI", evidence: "Requer validação PGI", status: "Provisório", active: true },
-  { id: "map-012", category: "Operação", context: "Todos", source: "Valor predefinido", target: "Wor0_4", output: "SRVINST", evidence: "Requer validação PGI", status: "Provisório", active: true },
+  { id: "map-009", category: "Operação", context: "Todos", source: "Valor predefinido", target: "Wor1_1", output: "ARTD", evidence: "Requer validação do utilizador", status: "Provisório", active: true },
+  { id: "map-010", category: "Operação", context: "Todos", source: "Valor predefinido", target: "Wor1_2", output: "TEMPERA", evidence: "Requer validação do utilizador", status: "Provisório", active: true },
+  { id: "map-011", category: "Operação", context: "Todos", source: "Valor predefinido", target: "Wor3_1", output: "ARI", evidence: "Requer validação do utilizador", status: "Provisório", active: true },
+  { id: "map-012", category: "Operação", context: "Todos", source: "Valor predefinido", target: "Wor0_4", output: "SRVINST", evidence: "Requer validação do utilizador", status: "Provisório", active: true },
 ];
 
 export function blankMapping(): MappingItem {

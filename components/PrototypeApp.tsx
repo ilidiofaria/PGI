@@ -373,7 +373,7 @@ export function PrototypeApp() {
           </section>
         </>}
       </div>
-      <footer><span>Protótipo de demonstração · PGI</span><span>As chaves de API são utilizadas apenas durante o pedido e não são armazenadas.</span></footer>
+      <footer><span>Protótipo de demonstração</span><span>As chaves de API são utilizadas apenas durante o pedido e não são armazenadas.</span></footer>
     </main>
   );
 }
